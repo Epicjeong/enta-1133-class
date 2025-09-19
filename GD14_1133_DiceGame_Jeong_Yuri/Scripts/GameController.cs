@@ -8,14 +8,13 @@ namespace GD14_1133_DiceGame_Jeong_Yuri.Scripts
 {
     internal class GameController
     {
-        int TotalRoll;
-        //Welcomes the player and creates the dice roller
         internal void PlayGame()
         {
+            //Welcomes the player and creates the dice roller
             Console.WriteLine("Welcome, I am Yuri Jeong writing this at September 17, 2025");
             DiceRolls diceroller = new DiceRolls();
             diceroller.RollDice();
-            //Explains what various arithmetic operators do
+            //Explains what various arithmetic operators do and says goodbye
             Console.WriteLine("+ adds the right number to the left number, so in 3 + 2 the 2 would be added into the 3 and output 5");
             Console.WriteLine("- subtracts the right number from the left number, so in 3 - 2 the 2 would be removed from the 3 and output 1");
             Console.WriteLine("/ divides the left number by the right number roudning down towards 0, so in 3 / 2 the 3 would be divided by 2, so rounding down would output 1");

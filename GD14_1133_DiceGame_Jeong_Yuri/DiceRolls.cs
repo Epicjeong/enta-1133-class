@@ -35,6 +35,7 @@ namespace GD14_1133_DiceGame_Jeong_Yuri
             int Roll4 = random.Next(MinRoll, MaxRoll);
             Console.WriteLine("The d20 rolled a " + Roll4);
 
+            //Calculates and displays the total of the 4 rolls
             TotalRoll = Roll1 + Roll2 + Roll3 + Roll4;
             Console.WriteLine(TotalRoll);
         }

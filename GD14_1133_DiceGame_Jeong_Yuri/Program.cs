@@ -5,7 +5,7 @@ namespace GD14_1133_DiceGame_Jeong_Yuri
     internal class Program
     {
         
-        //Instanciates the game controller
+        //Instanciates the game controller and starts the game
         static void Main(string[] args)
         {
             GameController controller = new GameController();
