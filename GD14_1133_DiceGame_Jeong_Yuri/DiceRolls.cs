@@ -9,35 +9,109 @@ namespace GD14_1133_DiceGame_Jeong_Yuri
 {
     internal class DiceRolls
     {
-        //Stores the total value of all rolls
-        int TotalRoll;
+        //The type of dice the player could roll
+        int diceType;
+        //The highest roll that can be rolled
+        int maxRoll;
+        //Stores the result of the dice to add to the players score
+        private int diceResult;
 
-        //Rolls various dice once by creating an instance of Random, starting from d6 and increasing to d8, d12, and d20
-        internal void RollDice(int MinRoll = 1, int MaxRoll = 6)
+        //Rolls various dice once by creating an instance of Random, choosing from d6, d8, d12, and d20
+        internal void RollDice(int minRoll = 1)
         {
-            //The starting d6 roll
+            //Creates the instance of Random for the dice
             Random random = new Random();
-            int Roll1 = random.Next(MinRoll, MaxRoll);
-            Console.WriteLine("The d6 rolled a " + Roll1);
 
-            //Increases to a d8 and rolls again
-            MaxRoll = 8;
-            int Roll2 = random.Next(MinRoll, MaxRoll);
-            Console.WriteLine("The d8 rolled a " + Roll2);
+            //Gets the number the player chose
+            int.TryParse(Console.ReadLine(), out diceType);
 
-            //Increases to a d12 and rolls again
-            MaxRoll = 12;
-            int Roll3 = random.Next(MinRoll, MaxRoll);
-            Console.WriteLine("The d12 rolled a " + Roll3);
+            //The following code rolls the dice that was chosen
+            //Rolls a d6
+            if (diceType == 1)
+            {
+                maxRoll = 6;
+                int Roll = random.Next(minRoll, maxRoll);
+                diceResult = Roll;
+                Console.WriteLine("The d6 rolled a " + diceResult);
+            }
+            //Rolls a d8
+            else if (diceType == 2)
+            {
+                maxRoll = 8;
+                int Roll = random.Next(minRoll, maxRoll);
+                diceResult = Roll;
+                Console.WriteLine("The d8 rolled a " + diceResult);
+            }
+            //Rolls a d12
+            else if (diceType == 3)
+            {
+                maxRoll = 12;
+                int Roll = random.Next(minRoll, maxRoll);
+                diceResult = Roll;
+                Console.WriteLine("The d12 rolled a " + diceResult);
+            }
+            //Rolls a d20
+            else if (diceType == 4)
+            {
+                maxRoll = 20;
+                int Roll = random.Next(minRoll, maxRoll);
+                diceResult = Roll;
+                Console.WriteLine("The d20 rolled a " + diceResult);
+            }
+            //Incase the player inputs either an invalid number, letter, or a special symbol
+            else
+            {
+                Console.WriteLine("Please input a valid number, this turn will be considered forfiet");
+            }
+        }
 
-            //Increases to a d20 and rolls again
-            MaxRoll = 20;
-            int Roll4 = random.Next(MinRoll, MaxRoll);
-            Console.WriteLine("The d20 rolled a " + Roll4);
+        //Rolls the computers dice from the same pool of dice the player chose
+        internal void ComputerDice(int minRoll = 1)
+        {
+            //Creates the instance of Random for the dice
+            Random random = new Random();
 
-            //Calculates and displays the total of the 4 rolls
-            TotalRoll = Roll1 + Roll2 + Roll3 + Roll4;
-            Console.WriteLine(TotalRoll);
+            int computerDiceType = random.Next(1, 4);
+
+            //The following code rolls the dice that was chosen
+            //Rolls a d6
+            if (computerDiceType == 1)
+            {
+                maxRoll = 6;
+                int Roll = random.Next(minRoll, maxRoll);
+                diceResult = Roll;
+                Console.WriteLine("The d6 rolled a " + diceResult);
+            }
+            //Rolls a d8
+            if (computerDiceType == 2)
+            {
+                maxRoll = 8;
+                int Roll = random.Next(minRoll, maxRoll);
+                diceResult = Roll;
+                Console.WriteLine("The d8 rolled a " + diceResult);
+            }
+            //Rolls a d12
+            if (computerDiceType == 3)
+            {
+                maxRoll = 12;
+                int Roll = random.Next(minRoll, maxRoll);
+                diceResult = Roll;
+                Console.WriteLine("The d12 rolled a " + diceResult);
+            }
+            //Rolls a d20
+            if (computerDiceType == 4)
+            {
+                maxRoll = 20;
+                int Roll = random.Next(minRoll, maxRoll);
+                diceResult = Roll;
+                Console.WriteLine("The d20 rolled a " + diceResult);
+            }
+        }
+
+        //Allows use of the dice result in other classes
+        internal int GetDiceResult()
+        {
+            return diceResult;
         }
     }
 }

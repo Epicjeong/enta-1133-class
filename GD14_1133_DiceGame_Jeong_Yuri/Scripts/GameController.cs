@@ -8,20 +8,49 @@ namespace GD14_1133_DiceGame_Jeong_Yuri.Scripts
 {
     internal class GameController
     {
+        //Keeps track of points
+        int playerPoints = 0;
+        int computerPoints = 0;
+
         internal void PlayGame()
         {
-            //Welcomes the player and creates the dice roller
-            Console.WriteLine("Welcome, I am Yuri Jeong writing this at September 17, 2025");
-            DiceRolls diceroller = new DiceRolls();
-            diceroller.RollDice();
-            //Explains what various arithmetic operators do and says goodbye
-            Console.WriteLine("+ adds the right number to the left number, so in 3 + 2 the 2 would be added into the 3 and output 5");
-            Console.WriteLine("- subtracts the right number from the left number, so in 3 - 2 the 2 would be removed from the 3 and output 1");
-            Console.WriteLine("/ divides the left number by the right number roudning down towards 0, so in 3 / 2 the 3 would be divided by 2, so rounding down would output 1");
-            Console.WriteLine("* multiplies the right number by the left number, so 3 * 2 would multiply the 3 by 2 and output 6");
-            Console.WriteLine("++ increases the operand by 1, before or after the operation depends on placement so i++ would output i at first but next time i would be i +1, but ++i would immediatly output i +1");
-            Console.WriteLine("-- decreases the operand by 1, before or after the operation depends on placement so i-- would output i at first but next time i would be i -1, but --i would immediatly output i -1");
-            Console.WriteLine("% gets the remainder after dividing the left number from the right number, so ");
+            //Welcomes the player and creates and the instance of the player's class, which asks the players name
+            Console.WriteLine("Welcome, I am Yuri Jeong writing this at September 23, 2025. What is your name?");
+            Player player = new Player();
+            player.PlayerTurn();
+            string playerName = player.GetPlayerName();
+
+            //Starts the computer's turn and creates the instance of the computers class
+            Console.WriteLine("Now it is the computer's turn, who will also choose from the same dice you chose form");
+            //playerTurn = false;
+            Computer computer = new Computer();
+            computer.ComputerTurn();
+
+            //Compares the rolls of the player and the computer
+            int playerRoll = player.GetPlayerRoll();
+            int computerRoll = computer.GetComputerRoll();
+            //Player win
+            if (playerRoll > computerRoll)
+            {
+                Console.WriteLine("You rolled " + playerRoll +", which is greater than " + computerRoll + ", which the computer rolled so you get a point");
+                playerPoints++;
+                Console.WriteLine("You now have " + playerPoints + " points");
+            }
+            //Computer win
+            if (playerRoll < computerRoll)
+            {
+                Console.WriteLine("The computer rolled " + computerRoll +", which is greater than " + playerRoll + ", which you rolled so the computer gets a point");
+                computerPoints++;
+                Console.WriteLine("The computer now has " + computerPoints + " points");
+            }
+            //Tie
+            if (playerRoll == computerRoll)
+            {
+                Console.WriteLine("As it is a tie, no points will be awarded");
+            }
+
+            //Displays the current points
+            Console.WriteLine("The score is now " + playerPoints + " for " + playerName + " and " + computerPoints + " for the computer");
             Console.WriteLine("Goodbye");
         }
     }
