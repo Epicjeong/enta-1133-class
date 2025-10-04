@@ -50,7 +50,7 @@ namespace GD14_1133_DiceGame_Jeong_Yuri
                 Console.WriteLine("The score is now " + playerPoints + " for you and " + computerPoints + " for the computer");
             }
             //Increases the round number and moves on to the next turn until either someone gets 3 points or it is not round 3
-            while (roundNumber < 4 || playerPoints == 3 || computerPoints == 3)
+            while (roundNumber < 4 && playerPoints < 3 && computerPoints < 3)
             {
                 roundNumber++;
                 Console.WriteLine("It is now round " + roundNumber);
