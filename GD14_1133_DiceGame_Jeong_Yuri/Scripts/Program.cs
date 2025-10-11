@@ -2,6 +2,9 @@
 
 namespace GD14_1133_DiceGame_Jeong_Yuri
 {
+    /// <summary>
+    /// Starts game
+    /// </summary>
     internal class Program
     {
         
@@ -9,7 +12,7 @@ namespace GD14_1133_DiceGame_Jeong_Yuri
         static void Main(string[] args)
         {
             GameController controller = new GameController();
-            controller.PlayGame();
+            controller.StartGame();
         }
     }
 }

@@ -6,52 +6,57 @@ using System.Threading.Tasks;
 
 namespace GD14_1133_DiceGame_Jeong_Yuri.Scripts
 {
+    /// <summary>
+    /// Actually starts the game
+    /// Gets the players name
+    /// Instantiates the classes used throughout the game
+    /// </summary>
     internal class GameController
     {
-        //Keeps track of points
-        int playerPoints = 0;
-        int computerPoints = 0;
+        //Keeps track of player name
+        private string playerName;
+        //Readies the custom classes that are used in other classes
+        //Not in the order they appear but it looks more satisfying this way
+        Map map;
+        Rock rock;
+        Player player;
+        EndGame endGame;
+        DiceRolls diceroller;
+        ScoreKeeper scoreKeep;
+        GameController gameController;
 
-        internal void PlayGame()
+
+        internal void StartGame()
         {
-            //Welcomes the player and creates and the instance of the player's class, which asks the players name
-            Console.WriteLine("Welcome, I am Yuri Jeong writing this at September 23, 2025. What is your name?");
-            Player player = new Player();
-            player.PlayerTurn();
-            string playerName = player.GetPlayerName();
-
-            //Starts the computer's turn and creates the instance of the computers class
-            Console.WriteLine("Now it is the computer's turn, who will also choose from the same dice you chose form");
-            //playerTurn = false;
-            Computer computer = new Computer();
-            computer.ComputerTurn();
-
-            //Compares the rolls of the player and the computer
-            int playerRoll = player.GetPlayerRoll();
-            int computerRoll = computer.GetComputerRoll();
-            //Player win
-            if (playerRoll > computerRoll)
+            //Instantiates every class that is used across classes
+            player = new Player();
+            endGame = new EndGame();
+            rock = new Rock();
+            diceroller = new DiceRolls();
+            scoreKeep = new ScoreKeeper();
+            gameController = new GameController();
+            map = new Map();
+            //Welcomes the player and creates and the instance of the players class, which asks the players name
+            Console.WriteLine("Welcome, I am Yuri Jeong writing this at October 3, 2025. What is your name?");
+            //Asks the players name
+            playerName = Console.ReadLine();
+            //Funny secret to people who decide not to input anything
+            if (playerName == "")
             {
-                Console.WriteLine("You rolled " + playerRoll +", which is greater than " + computerRoll + ", which the computer rolled so you get a point");
-                playerPoints++;
-                Console.WriteLine("You now have " + playerPoints + " points");
+                Console.WriteLine("Well its rude to judge a name, or a lack of one at that matter");
             }
-            //Computer win
-            if (playerRoll < computerRoll)
-            {
-                Console.WriteLine("The computer rolled " + computerRoll +", which is greater than " + playerRoll + ", which you rolled so the computer gets a point");
-                computerPoints++;
-                Console.WriteLine("The computer now has " + computerPoints + " points");
-            }
-            //Tie
-            if (playerRoll == computerRoll)
-            {
-                Console.WriteLine("As it is a tie, no points will be awarded");
-            }
-
-            //Displays the current points
-            Console.WriteLine("The score is now " + playerPoints + " for " + playerName + " and " + computerPoints + " for the computer");
+            //Asks if the player wants to play
+            Console.WriteLine("Hello " + playerName + ", are you ready to RandomMinze? Please enter y for yes, n for no");
+            AskToPlay playmygame = new AskToPlay();
+            playmygame.PlayMyGame(map, player, rock, diceroller, scoreKeep, gameController, endGame);
+            //Gonna say goodbye
             Console.WriteLine("Goodbye");
+        }
+        //Lets other classes get the players name
+        internal string GetPlayerName()
+        {
+            Console.WriteLine(playerName);
+            return playerName;
         }
     }
 }
