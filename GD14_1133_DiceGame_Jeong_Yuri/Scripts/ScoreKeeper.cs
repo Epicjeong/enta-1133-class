@@ -49,6 +49,7 @@ namespace GD14_1133_DiceGame_Jeong_Yuri
             Console.WriteLine("You've broken the rock! You have obtained $" + rockMaxHealth + " worth of rocks");
             playerPoints = playerPoints + rock.GetRockMaxHealth();
             Console.WriteLine("You now have $" + playerPoints + " worth of rocks");
+            roundNumber = 0;
         }
 
         //Lets other classes get the pp
