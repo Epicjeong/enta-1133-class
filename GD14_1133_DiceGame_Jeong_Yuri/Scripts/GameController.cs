@@ -6,52 +6,74 @@ using System.Threading.Tasks;
 
 namespace GD14_1133_DiceGame_Jeong_Yuri.Scripts
 {
+    /// <summary>
+    /// Actually starts the game
+    /// Gets the players name
+    /// Instantiates the classes used throughout the game
+    /// </summary>
     internal class GameController
     {
-        //Keeps track of points
-        int playerPoints = 0;
-        int computerPoints = 0;
+        //Keeps track of player name
+        private string playerName;
+        //Readies the custom classes that are used in other classes
+        //Not in the order they appear but it looks more satisfying this way
+        Map map;
+        Rock rock;
+        Random random;
+        Player player;
+        EndGame endGame;
+        DiceRolls diceroller;
+        ScoreKeeper scoreKeep;
 
-        internal void PlayGame()
+
+        internal void StartGame()
         {
-            //Welcomes the player and creates and the instance of the player's class, which asks the players name
-            Console.WriteLine("Welcome, I am Yuri Jeong writing this at September 23, 2025. What is your name?");
-            Player player = new Player();
-            player.PlayerTurn();
-            string playerName = player.GetPlayerName();
-
-            //Starts the computer's turn and creates the instance of the computers class
-            Console.WriteLine("Now it is the computer's turn, who will also choose from the same dice you chose form");
-            //playerTurn = false;
-            Computer computer = new Computer();
-            computer.ComputerTurn();
-
-            //Compares the rolls of the player and the computer
-            int playerRoll = player.GetPlayerRoll();
-            int computerRoll = computer.GetComputerRoll();
-            //Player win
-            if (playerRoll > computerRoll)
+            //Instantiates every class that is used across classes
+            player = new Player();
+            endGame = new EndGame();
+            rock = new Rock();
+            diceroller = new DiceRolls();
+            scoreKeep = new ScoreKeeper();
+            map = new Map();
+            random = new Random();
+            //Welcomes the player and creates and the instance of the players class, which asks the players name
+            Console.WriteLine("Welcome, I am Yuri Jeong writing this at October 17, 2025. What is your name?");
+            //Asks the players name
+            playerName = Console.ReadLine();
+            //Funny secret to people who decide not to input anything
+            if (playerName == "")
             {
-                Console.WriteLine("You rolled " + playerRoll +", which is greater than " + computerRoll + ", which the computer rolled so you get a point");
-                playerPoints++;
-                Console.WriteLine("You now have " + playerPoints + " points");
+                Console.WriteLine("Well its rude to judge a name, or a lack of one at that matter");
             }
-            //Computer win
-            if (playerRoll < computerRoll)
-            {
-                Console.WriteLine("The computer rolled " + computerRoll +", which is greater than " + playerRoll + ", which you rolled so the computer gets a point");
-                computerPoints++;
-                Console.WriteLine("The computer now has " + computerPoints + " points");
-            }
-            //Tie
-            if (playerRoll == computerRoll)
-            {
-                Console.WriteLine("As it is a tie, no points will be awarded");
-            }
-
-            //Displays the current points
-            Console.WriteLine("The score is now " + playerPoints + " for " + playerName + " and " + computerPoints + " for the computer");
+            //Explains rules and asks if the player wants to play
+            Console.WriteLine("Hello " + playerName + ", let me explain the game that will be played");
+            Console.WriteLine("");
+            Console.WriteLine("You will be placed into a randomly generated mine with a pickaxe that has a certain amount of durability");
+            Console.WriteLine("The mine is a grid, each square on that grid can be a treasure room or an item room");
+            Console.WriteLine("In an item room, you could find items that help you in your mining, like duct tape to restore durability");
+            Console.WriteLine("In a treasure room, you will find a cool rock that has value to it, and commence the mining");
+            Console.WriteLine("");
+            Console.WriteLine("When mining, the rock has a random amount of health that you must deplete by using your durability");
+            Console.WriteLine("You can choose how much durability to use at a time, then the amount of durability you chose will roll a dice");
+            Console.WriteLine("The durability you chose wil be the highest possible roll of the dice, so if you chose 7 the max roll is 7");
+            Console.WriteLine("Using items found by searching item rooms, you can increase the durability of your pickaxe");
+            Console.WriteLine("At the start of a swing, you can use 1 item if you have any, so dont worry about saving them up");
+            Console.WriteLine("");
+            Console.WriteLine("Once the rocks health is depleted, you will gain the rocks max health as value in $");
+            Console.WriteLine("When you leave the mine, your total value will be displayed and the game will end");
+            Console.WriteLine("Your end goal is to exit the mine with at least #30 in rocks");
+            Console.WriteLine("If you ever reach 0 durability, you will automatically leave the mine and end the game");
+            Console.WriteLine("Now with that explained, are you ready to Randominez? Please enter y for yes, n for no");
+            AskToPlay playmygame = new AskToPlay();
+            playmygame.PlayMyGame(map, player, rock, random, diceroller, scoreKeep, endGame);
+            //Gonna say goodbye
             Console.WriteLine("Goodbye");
+        }
+        //Lets other classes get the players name
+        internal string GetPlayerName()
+        {
+            Console.WriteLine(playerName);
+            return playerName;
         }
     }
 }
