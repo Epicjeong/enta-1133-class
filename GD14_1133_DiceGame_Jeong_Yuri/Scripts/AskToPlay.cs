@@ -26,7 +26,8 @@ namespace GD14_1133_DiceGame_Jeong_Yuri.Scripts
                 //If yes, explains the rules
                 if (answer == "y")
                 {
-                    Console.WriteLine("Excellent, now choose how much durability to start with (minimum starting durability is 10, 50 is reccomended)");
+                    //Minimum is 30 because the game is theoretically impossible otherwise
+                    Console.WriteLine("Excellent, now choose how much durability to start with (minimum starting durability is 30, 50 is reccomended)");
                     //Sets the amount of sides the player starts with
                     player.SetPlayerSides();
                     //Generates the map

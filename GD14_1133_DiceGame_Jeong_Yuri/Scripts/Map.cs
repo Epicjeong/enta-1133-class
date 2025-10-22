@@ -13,11 +13,15 @@ namespace GD14_1133_DiceGame_Jeong_Yuri.Scripts
     /// </summary>
     internal class Map
     {
-        int x = 3, y = 3;
+        //Sets size of the map
+        const int x = 3, y = 3;
         //Initial initialization of rooms on a map
         private Room[,] layout;
         bool exploring;
-        private Room startingRoom;
+        private Room currentRoom;
+
+        //Keeps track of the amount of unique rooms visited
+        int roomsUsed;
 
         //Creates a 3 by 3 map where the rooms are placed
         internal void CreateMap(int selection,int direction, Player player, Rock rock, Random random, DiceRolls diceroller, ScoreKeeper scoreKeep, EndGame endGame, Map map)
@@ -29,7 +33,8 @@ namespace GD14_1133_DiceGame_Jeong_Yuri.Scripts
             for (int i = 0; i < x; i++)
             {
                 //Initializes the rooms and the random decision to choose which room
-                int roomType = random.Next(1, 133);
+                //int roomType = random.Next(1, 133);
+                int roomType = 66;
                 //Randomly decides between a treasure or item room
                 if (roomType > 66)
                 {
@@ -109,9 +114,10 @@ namespace GD14_1133_DiceGame_Jeong_Yuri.Scripts
 
             //Allows the game to loop after its finished
             exploring = true;
+            roomsUsed = 0;
             //Starts the player at the centre of the grid
-            startingRoom = layout[x = 1, y = 1];
-            startingRoom.OnRoomEntered(player, rock, random, diceroller, scoreKeep, endGame, map);
+            currentRoom = layout[1, 1];
+            currentRoom.OnRoomEntered(player, rock, random, diceroller, scoreKeep, endGame, map);
             //Lets the player start to move around
             PlayerChoice(selection, direction, player, rock, random, diceroller, scoreKeep, endGame, map);
         }
@@ -120,8 +126,6 @@ namespace GD14_1133_DiceGame_Jeong_Yuri.Scripts
         {
             while (exploring == true)
             {
-                //Checks the current room
-                Room? currentRoom = layout[x, y];
                 Console.WriteLine("What would you like to do? (1 to move to a different room, 2 to search the room you are in, 3 to check your inventory)");
                 Console.WriteLine("If you're ready to exit the mine, press 4 instead");
                 //Receives input
@@ -139,11 +143,29 @@ namespace GD14_1133_DiceGame_Jeong_Yuri.Scripts
                         break;
                     case 4:
                         exploring = false;
-                        endGame.PlayerWin(player, scoreKeep);
+                        endGame.PlayerWin(player, scoreKeep, map);
                         break;
                     default:
                         Console.WriteLine("Please enter a valid option");
                         break;
+                }
+                if (currentRoom.hasVisited == true)
+                {
+                    roomsUsed++;
+                }
+                //Automatically ends the game if every room is explored
+                if (roomsUsed >= 9 || player.GetPlayerSidesLeft() <= 0)
+                {
+                    if (roomsUsed >= 9)
+                    { 
+                    Console.WriteLine("You have acquired everything in the mines, and will now leave");
+                    }
+                    else if (player.GetPlayerSidesLeft() <= 0)
+                    {
+                        Console.WriteLine("As you are out of durability, you will now leave the mine");
+                    }
+                    exploring = false;
+                    endGame.PlayerWin(player, scoreKeep, map);
                 }
             }
         }
@@ -151,8 +173,6 @@ namespace GD14_1133_DiceGame_Jeong_Yuri.Scripts
         //Moves the player from room to room
         internal void MoveFromRoom(int selection, int direction, Player player, Rock rock, Random random, DiceRolls diceroller, ScoreKeeper scoreKeep, EndGame endGame, Map map)
         {
-            Room? currentRoom = layout[x, y];
-
             Console.WriteLine("Which direction would you like to move? (1 is north, 2 is east, 3 is south, 4 is west");
             Console.WriteLine("Or press anything else to do something else)");
             //Gets the input that controls where to move
@@ -218,18 +238,13 @@ namespace GD14_1133_DiceGame_Jeong_Yuri.Scripts
                     break;
             }
         }
-
         //Resets the current room like it was entered for the first time
         internal void ResetRoom(Player player, Rock rock, Random random, DiceRolls diceroller, ScoreKeeper scoreKeep, EndGame endGame, Map map)
         {
-            Room currentRoom = layout[x, y];
+            Console.WriteLine("The magnifying glass reveals a rock you didnt see");
+            roomsUsed--;
             currentRoom.hasVisited = true;
             currentRoom.OnRoomEntered(player, rock, random, diceroller, scoreKeep, endGame, map);
-        }
-        //Lets other classes get the currently occupied room
-        internal Room GetRoom(int x, int y)
-        {
-            return layout[x, y];
         }
     }
 }

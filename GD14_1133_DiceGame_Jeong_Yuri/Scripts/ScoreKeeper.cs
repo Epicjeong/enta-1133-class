@@ -32,7 +32,7 @@ namespace GD14_1133_DiceGame_Jeong_Yuri
                 Console.WriteLine("This is swing number " + roundNumber);
                 //Allows use of items while mining
                 player.UseInventory(player, rock, random, diceroller, scoreKeep, endGame, map);
-                player.PlayerTurn(player, diceroller, scoreKeep, endGame);
+                player.PlayerTurn(player, diceroller, scoreKeep, endGame, map);
                 rock.BreakRock(player);
                 rockHealth = rock.GetRockHealth();
                 if (rockHealth >= rockMaxHealth / 2)

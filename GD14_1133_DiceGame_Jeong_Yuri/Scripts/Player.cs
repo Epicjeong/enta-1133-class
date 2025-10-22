@@ -14,6 +14,8 @@ namespace GD14_1133_DiceGame_Jeong_Yuri
     /// </summary>
     internal class Player
     {
+        //
+        int startingSides;
         //The number the player rolled
         private int playerRoll;
         //The value of what the player has collected
@@ -21,37 +23,44 @@ namespace GD14_1133_DiceGame_Jeong_Yuri
         //The pickaxes durability
         private int playerSidesLeft;
         //The durability restored by items
-        int durabilityRestoreded;
+        int durabilityRestored;
         //The value you have obtained from gems
         int valueFromGems;
         //Egg
         int hasEgg;
 
+        //Sets the amount of durability the player starts with
         internal void SetPlayerSides()
         {
-            //Sets the amount of durability the player starts with
-            int.TryParse(Console.ReadLine(), out int startingSides);
-            if (startingSides >= 10)
+            //The inventory is reset here as the player would need to set the durability at the start of the loop anyways
+            inventory["Duct tape"] = 0;
+            inventory["Weird glue"] = 0;
+            inventory["Gem"] = 0;
+            inventory["Magnifying glass"] = 0;
+            valueFromGems = 0;
+            hasEgg = 0;
+            startingSides = 0;
+
+            while (startingSides < 30)
             {
-                playerSidesLeft = startingSides;
+                int.TryParse(Console.ReadLine(), out startingSides);
+                if (startingSides < 30)
+                {
+                    Console.WriteLine("Please input a valid option");
+                }
             }
-            //The reason the minimum is 10 is because I feel any below that would be unfun, at 10 there is at least some sembalence of chance
-            else
-            {
-                Console.WriteLine("Please input a valid number");
-                SetPlayerSides();
-            }
+            playerSidesLeft = startingSides;
         }
 
         //The players turn
-        internal void PlayerTurn(Player player, DiceRolls diceroller, ScoreKeeper scoreKeep, EndGame endGame)
+        internal void PlayerTurn(Player player, DiceRolls diceroller, ScoreKeeper scoreKeep, EndGame endGame, Map map)
         {
             //Starts the dice roller aslong as you have durability left
             if ( playerSidesLeft == 0)
             {
                 Console.WriteLine("As you are out of durability, you will now exit the mine");
                 playerRoll = 0;
-                endGame.PlayerWin(player, scoreKeep);
+                endGame.PlayerWin(player, scoreKeep, map);
             }
             else
             {
@@ -72,7 +81,7 @@ namespace GD14_1133_DiceGame_Jeong_Yuri
             {"Duct tape", 0 },
             {"Weird glue", 0 },
             {"Gem", 0 },
-            {"Magnifying glass", 0 }
+            {"Magnifying glass", 1 }
         };
 
         //Obtains items
@@ -136,7 +145,7 @@ namespace GD14_1133_DiceGame_Jeong_Yuri
                     DuraItem selectedItem;
                     selectedItem = new DuctTape();
                     selectedItem.ItemAction(player, rock, random, diceroller, scoreKeep, endGame, map);
-                    durabilityRestoreded = selectedItem.duraRestored;
+                    durabilityRestored = selectedItem.duraRestored;
                     inventory["Duct tape"]--;
                     Console.WriteLine("You have " + inventory["Duct tape"] + " duct tape left");
                 }
@@ -146,12 +155,12 @@ namespace GD14_1133_DiceGame_Jeong_Yuri
                     DuraItem selectedItem;
                     selectedItem = new WeirdGlue();
                     selectedItem.ItemAction(player, rock, random, diceroller, scoreKeep, endGame, map);
-                    durabilityRestoreded = selectedItem.duraRestored;
+                    durabilityRestored = selectedItem.duraRestored;
                     inventory["Weird glue"]--;
                     Console.WriteLine("You have " + inventory["Weird glue"] + " weird glue left");
                 }
-                playerSidesLeft = playerSidesLeft + durabilityRestoreded;
-                Console.WriteLine("Your pickaxe restored " + durabilityRestoreded + " durability");
+                playerSidesLeft = playerSidesLeft + durabilityRestored;
+                Console.WriteLine("Your pickaxe restored " + durabilityRestored + " durability");
                 Console.WriteLine("Your pickaxe now has " + playerSidesLeft + " durability");
             }
             //Use magnifying glass
